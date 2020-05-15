@@ -4,21 +4,22 @@ const fs = require("fs");
 const readFileAsyn = util.promisify(fs.readFile);
 const writeFileAsync = util.promisify(fs.writeFile);
 
-
 class Notes {
     constructor() {
-        this.idDum = 0;
+        this.idNum = 0;
     }
-    read() {
-        return readFileAsyn("db/db.json", "utf8");
 
+    readNotes() {
+        return readFileAsyn("db/db.json", "utf8");
     }
-    write(note) {
+
+    writeNotes(note) {
         return writeFileAsync("db/db.json", JSON.stringify(note))
     }
+
     getNotes() {
         console.log("get notes")
-        return this.read().then(notes => {
+        return this.readNotes().then(notes => {
             console.log(notes)
             let notesArray;
             try {
@@ -29,23 +30,23 @@ class Notes {
             }
             return notesArray;
         })
-
     }
+
     addNotes(note) {
         console.log("add notes");
         const { title, text } = note;
-        const newNote = { title, text, id: ++this.idDum }
+        const newNote = { title, text, id: ++this.idNum }
         return this.getNotes()
             .then(notes => [...notes, newNote])
-            .then(updateNotes => this.write(updateNotes))
+            .then(updateNotes => this.writeNotes(updateNotes))
             .then(() => newNote)
-
     }
-    removeNote(id) {
+
+    deleteNote(id) {
         console.log("remove notes");
         return this.getNotes()
             .then(notes => notes.filter(note => note.id !== parseInt(id)))
-            .then(updatedNotes => this.write(updatedNotes))
+            .then(updatedNotes => this.writeNotes(updatedNotes))
     }
 }
 
