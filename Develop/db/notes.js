@@ -18,7 +18,7 @@ class Notes {
     }
 
     getNotes() {
-        console.log("get notes")
+        console.log("Getting your notes")
         return this.readNotes().then(notes => {
             console.log(notes)
             let notesArray;
@@ -43,7 +43,7 @@ class Notes {
     }
 
     deleteNote(id) {
-        console.log("remove notes");
+        console.log("Deleting your note");
         return this.getNotes()
             .then(notes => notes.filter(note => note.id !== parseInt(id)))
             .then(updatedNotes => this.writeNotes(updatedNotes))
